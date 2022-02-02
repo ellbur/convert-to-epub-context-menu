@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Convert to EPUB
+GenericName=Convert to EPUB
+Comment=Puts converted file in same directory with same name
+TryExec=convert-to-epub
+Exec=convert-to-epub %f
+Type=Application
+Icon=ebook-reader
+Categories=Utility;
+StartupNotify=false
+MimeType=application/vnd.openxmlformats-officedocument.wordprocessingml.document;text/html;text/plain;text/markdown
