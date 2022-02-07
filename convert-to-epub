@@ -4,28 +4,39 @@ set -e
 
 gui-waiting-popup 'Convert to EPUB' convert-to-epub &
 
+{
+
 num_args_supplied=${#*}
 if [[ $num_args_supplied -ne 1 ]] ; then
   echo "Wrong number of arguments supplied ($num_args_supplied, should be 1)" >&2
   echo "Usage: $0 <file-to-convert>"
+  kill %
   exit 1
 fi
 
 type_args=()
 
-if [[ ${1:e} == 'docx' ]] ; then
-  type_args=(--from docx)
-elif [[ ${1:e} == 'txt' ]] ; then
-  type_args=(--from markdown)
-elif [[ ${1:e} == 'md' ]] ; then
-  type_args=(--from markdown)
-elif [[ ${1:e} == 'html' ]] ; then
-  type_args=(--from html)
-elif [[ ${1:e} == 'htm' ]] ; then
-  type_args=(--from html)
+if [[ ${1:e:l} == 'pdf' ]] ; then
+  law-memo-pdf-to-epub --out ${1:r}.epub $1
+else
+  if [[ ${1:e:l} == 'docx' ]] ; then
+    type_args=(--from docx)
+  elif [[ ${1:e:l} == 'txt' ]] ; then
+    type_args=(--from markdown)
+  elif [[ ${1:e:l} == 'md' ]] ; then
+    type_args=(--from markdown)
+  elif [[ ${1:e:l} == 'html' ]] ; then
+    type_args=(--from html)
+  elif [[ ${1:e:l} == 'htm' ]] ; then
+    type_args=(--from html)
+  fi
+
+  pandoc $type_args --to epub $1 -o ${1:r}.epub
 fi
 
-pandoc $type_args --to epub $1 -o ${1:r}.epub
+} always {
 
 kill %
+
+}
 
